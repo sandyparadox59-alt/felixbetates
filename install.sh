@@ -101,7 +101,7 @@ install_theme() {
     case "$SELECT_THEME" in
     1) THEME_URL="https://github.com/sandyparadox59-alt/felixbetates/raw/main/C2.zip"; break ;;
     2) THEME_URL="https://github.com/sandyparadox59-alt/felixbetates/raw/main/enigma.zip"; break ;;
-    3) THEME_URL="https://github.com/sandyparadox59-alt/felixbetates/raw/main/C3.zip"; break ;;y
+    3) THEME_URL="https://github.com/sandyparadox59-alt/felixbetates/raw/main/C3.zip"; break ;;
     x) return ;;
       *)
         echo -e "${RED}Pilihan tidak valid, silahkan coba lagi.${NC}"

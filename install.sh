@@ -120,6 +120,232 @@ install_theme() {
   echo -e "${GREEN}✅ INSTALLASI THEME SELESAI${NC}"
   sleep 2
 }
+uninstall_panel() {
+  echo -e "                                                       "
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "${BLUE}[+]                    UNINSTALL PANEL                 [+]${NC}"
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+
+
+bash <(curl -s https://pterodactyl-installer.se) <<EOF
+y
+y
+y
+y
+EOF
+
+
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]                 UNINSTALL PANEL SUKSES             [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  sleep 2
+  clear
+  exit 0
+}
+
+# Uninstall theme
+uninstall_theme() {
+  echo -e "                                                       "
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "${BLUE}[+]                    DELETE THEME                 [+]${NC}"
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  bash <(curl https://raw.githubusercontent.com/sandyparadox59-alt/felixbetates/edit/main/repair.sh)
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]                 DELETE THEME SUKSES             [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  sleep 2
+  clear
+}
+install_themeSteeler() {
+#!/bin/bash
+
+echo -e "                                                       "
+echo -e "${BLUE}[+] =============================================== [+]${NC}"
+echo -e "${BLUE}[+]                  INSTALLASI THEMA               [+]${NC}"
+echo -e "${BLUE}[+] =============================================== [+]${NC}"
+echo -e "                                                                   "
+
+# Unduh file tema
+wget -O /root/C2.zip https://github.com/sandyparadox59-alt/felixbetates/raw/main/C2.zip
+
+# Ekstrak file tema
+unzip /root/C2.zip -d /root/pterodactyl
+
+# Salin tema ke direktori Pterodactyl
+sudo cp -rfT /root/pterodactyl /var/www/pterodactyl
+
+# Instal Node.js dan Yarn
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm i -g yarn
+
+# Instal dependensi dan build tema
+cd /var/www/pterodactyl
+yarn add react-feather
+php artisan migrate
+yarn build:production
+php artisan view:clear
+
+# Hapus file dan direktori sementara
+sudo rm /root/C2.zip
+sudo rm -rf /root/pterodactyl
+
+echo -e "                                                       "
+echo -e "${GREEN}[+] =============================================== [+]${NC}"
+echo -e "${GREEN}[+]                   INSTALL SUCCESS               [+]${NC}"
+echo -e "${GREEN}[+] =============================================== [+]${NC}"
+echo -e ""
+sleep 2
+clear
+exit 0
+
+}
+create_node() {
+  echo -e "                                                       "
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "${BLUE}[+]                    CREATE NODE                     [+]${NC}"
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  #!/bin/bash
+#!/bin/bash
+
+# Minta input dari pengguna
+read -p "Masukkan nama lokasi: " location_name
+read -p "Masukkan deskripsi lokasi: " location_description
+read -p "Masukkan domain: " domain
+read -p "Masukkan nama node: " node_name
+read -p "Masukkan RAM (dalam MB): " ram
+read -p "Masukkan jumlah maksimum disk space (dalam MB): " disk_space
+read -p "Masukkan Locid: " locid
+
+# Ubah ke direktori pterodactyl
+cd /var/www/pterodactyl || { echo "Direktori tidak ditemukan"; exit 1; }
+
+# Membuat lokasi baru
+php artisan p:location:make <<EOF
+$location_name
+$location_description
+EOF
+
+# Membuat node baru
+php artisan p:node:make <<EOF
+$node_name
+$location_description
+$locid
+https
+$domain
+yes
+no
+no
+$ram
+$ram
+$disk_space
+$disk_space
+100
+8080
+2022
+/var/lib/pterodactyl/volumes
+EOF
+
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]        CREATE NODE & LOCATION SUKSES             [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  sleep 2
+  clear
+  exit 0
+}
+configure_wings() {
+  echo -e "                                                       "
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "${BLUE}[+]                    CONFIGURE WINGS                 [+]${NC}"
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  #!/bin/bash
+
+# Minta input token dari pengguna
+read -p "Masukkan token Configure menjalankan wings: " wings
+
+eval "$wings"
+# Menjalankan perintah systemctl start wings
+sudo systemctl start wings
+
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]                 CONFIGURE WINGS SUKSES             [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  sleep 2
+  clear
+  exit 0
+}
+hackback_panel() {
+  echo -e "                                                       "
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "${BLUE}[+]                    HACK BACK PANEL                 [+]${NC}"
+  echo -e "${BLUE}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  # Minta input dari pengguna
+read -p "Masukkan Username Panel: " user
+read -p "password login " psswdhb
+  #!/bin/bash
+cd /var/www/pterodactyl || { echo "Direktori tidak ditemukan"; exit 1; }
+
+# Membuat lokasi baru
+php artisan p:user:make <<EOF
+yes
+hackback@gmail.com
+$user
+$user
+$user
+$psswdhb
+EOF
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]                 AKUN TELAH DI ADD             [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  sleep 2
+  
+  exit 0
+}
+ubahpw_vps() {
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]                    UBAH PASSWORD VPS       [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+read -p "Masukkan Pw Baru: " pw
+read -p "Masukkan Ulang Pw Baru " pw
+
+passwd <<EOF
+$pw
+$pw
+
+EOF
+
+
+  echo -e "                                                       "
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "${GREEN}[+]                 GANTI PW VPS SUKSES         [+]${NC}"
+  echo -e "${GREEN}[+] =============================================== [+]${NC}"
+  echo -e "                                                       "
+  sleep 2
+  
+  exit 0
+}
+
+# Main script
+display_welcome
+install_jq
+check_token
 
 # ===================== MENU UTAMA =====================
 main_menu() {
@@ -144,27 +370,23 @@ PING
   echo "5. Uninstall Panel"
   echo "6. Hack Back Panel"
   echo "7. Ubah Password VPS"
+  echo "8. install themeSteeler"
   echo "x. Keluar"
   echo -ne "${YELLOW}Pilih menu: ${NC}"
 }
-
-# ===================== START SCRIPT =====================
-display_welcome
-install_jq
-check_token
-
 while true; do
   main_menu
   read -r MENU_CHOICE
   clear
   case "$MENU_CHOICE" in
     1) install_theme ;;
-    2) echo -e "${YELLOW}🚧 Uninstall Theme (coming soon)${NC}" ;;
-    3) echo -e "${YELLOW}🚧 Configure Wings (coming soon)${NC}" ;;
-    4) echo -e "${YELLOW}🚧 Create Node (coming soon)${NC}" ;;
-    5) echo -e "${YELLOW}🚧 Uninstall Panel (coming soon)${NC}" ;;
-    6) echo -e "${YELLOW}🚧 Hack Back Panel (coming soon)${NC}" ;;
-    7) echo -e "${YELLOW}🚧 Ubah Password VPS (coming soon)${NC}" ;;
+    2) uninstall_theme ;;
+    3) configure_wings ;;
+    4) create_node ;;
+    5) uninstall_panel ;;
+    6) hackback_panel ;;
+    7) ubahpw_vps ;;
+    8) install_themeSteeler ;;
     x) echo -e "${RED}Keluar dari script.${NC}"; exit 0 ;;
     *) echo -e "${RED}Pilihan tidak valid.${NC}" ;;
   esac

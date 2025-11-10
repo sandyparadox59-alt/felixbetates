@@ -9,7 +9,7 @@ const { TelegramClient } = require('telegram');
 const { StringSession } = require('telegram/sessions');
 const fs = require('fs');
 const path = require('path');
-const token = '8325298371:AAHpko6zNuwAXXonyqoMHA9j--FyX1mNlJ4';
+const token = '8325298371:xxxx--FyX1mNlJ4';
 const bot = new TelegramBot(token, { polling: true });
 
 // folder penyimpanan sesi userbot

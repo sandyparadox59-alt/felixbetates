@@ -1,0 +1,95 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-11-10T18:45:00+07:00",
+    "name": "NodeJS + Python3",
+    "author": "felixbase@github",
+    "description": "Egg Pterodactyl dengan Node.js dan Python3 di dalam satu container. Cocok untuk bot multi-runtime (NodeJS + Telethon).",
+    "features": null,
+    "docker_images": {
+        "ghcr.io/parkervcp/yolks:nodejs_23": "ghcr.io/parkervcp/yolks:nodejs_23",
+        "ghcr.io/parkervcp/yolks:nodejs_22": "ghcr.io/parkervcp/yolks:nodejs_22",
+        "ghcr.io/parkervcp/yolks:nodejs_20": "ghcr.io/parkervcp/yolks:nodejs_20",
+        "ghcr.io/parkervcp/yolks:nodejs_18": "ghcr.io/parkervcp/yolks:nodejs_18",
+        "ghcr.io/parkervcp/yolks:nodejs_17": "ghcr.io/parkervcp/yolks:nodejs_17",
+        "ghcr.io/parkervcp/yolks:nodejs_16": "ghcr.io/parkervcp/yolks:nodejs_16",
+        "ghcr.io\/parkervcp\/yolks:python_3.14": "ghcr.io\/parkervcp\/yolks:python_3.14",
+        "ghcr.io\/parkervcp\/yolks:python_3.13": "ghcr.io\/parkervcp\/yolks:python_3.13",
+        "ghcr.io\/parkervcp\/yolks:python_3.12": "ghcr.io\/parkervcp\/yolks:python_3.12",
+        "ghcr.io\/parkervcp\/yolks:python_3.11": "ghcr.io\/parkervcp\/yolks:python_3.11",
+        "ghcr.io\/parkervcp\/yolks:python_3.10": "ghcr.io\/parkervcp\/yolks:python_3.10",
+        "ghcr.io\/parkervcp\/yolks:python_3.9": "ghcr.io\/parkervcp\/yolks:python_3.9",
+        "ghcr.io\/parkervcp\/yolks:python_3.8": "ghcr.io\/parkervcp\/yolks:python_3.8",
+        "ghcr.io\/parkervcp\/yolks:python_3.7": "ghcr.io\/parkervcp\/yolks:python_3.7"
+    },
+    "file_denylist": [],
+    "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; if [[ ! -z ${NODE_PACKAGES} ]]; then npm install ${NODE_PACKAGES}; fi; if [[ -f package.json ]]; then npm install; fi; if [[ ! -z ${CUSTOM_ENVIRONMENT_VARIABLES} ]]; then vars=$(echo ${CUSTOM_ENVIRONMENT_VARIABLES} | tr \";\" \"\\n\"); for line in $vars; do export $line; done; fi; ${CMD_RUN}",
+    "config": {
+        "files": "{}",
+        "startup": "{ \"done\": \"running\" }",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!/usr/local/bin/bash\n# NodeJS + Python3 installer\n# Server Files: /mnt/server\n\napt-get update -y\napt-get install -y python3 python3-pip git curl make gcc g++ unzip\n\ncd /mnt/server\n\nif [ \"${USER_UPLOAD}\" == \"true\" ] || [ \"${USER_UPLOAD}\" == \"1\" ]; then\n    echo -e \"User upload mode aktif, skip clone.\"\n    exit 0\nfi\n\nif [[ ${GIT_ADDRESS} != *.git ]]; then\n    GIT_ADDRESS=${GIT_ADDRESS}.git\nfi\n\nif [ -z \"${USERNAME}\" ] && [ -z \"${ACCESS_TOKEN}\" ]; then\n    echo -e \"Menggunakan akses Git anonim.\"\nelse\n    GIT_ADDRESS=\"https://${USERNAME}:${ACCESS_TOKEN}@$(echo -e ${GIT_ADDRESS} | cut -d/ -f3-)\"\nfi\n\nif [ -z ${BRANCH} ]; then\n    git clone ${GIT_ADDRESS} .\nelse\n    git clone --single-branch --branch ${BRANCH} ${GIT_ADDRESS} .\nfi\n\nif [[ -f package.json ]]; then\n    npm install --production\nfi\n\necho -e \"✅ Instalasi selesai. NodeJS & Python3 siap digunakan.\"\nexit 0",
+            "container": "node:18-bullseye-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Git Repo Address",
+            "description": "URL repository GitHub/GitLab untuk di-clone (contoh: https://github.com/user/repo)",
+            "env_variable": "GIT_ADDRESS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Install Branch",
+            "description": "Branch Git yang akan di-clone",
+            "env_variable": "BRANCH",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Username",
+            "description": "Username GitHub (jika repo private)",
+            "env_variable": "USERNAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Access Token",
+            "description": "Personal Access Token untuk repo private",
+            "env_variable": "ACCESS_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Command Run",
+            "description": "Perintah untuk menjalankan app (contoh: `python3 Felix.py` atau `npm start`)",
+            "env_variable": "CMD_RUN",
+            "default_value": "node index.js",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        }
+    ]
+}
